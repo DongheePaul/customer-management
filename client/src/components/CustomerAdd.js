@@ -17,16 +17,17 @@ class CustomerAdd extends React.Component {
   handleFormSubmit = (e) => {
     e.preventDefault();
     this.addCustomer().then((response) => {
-      this.setState({
-        file: null,
-        userName: "",
-        birthday: "",
-        gender: "",
-        job: "",
-        fileName: "",
-      });
+      console.log(response.data);
+      this.props.stateRefresh();
     });
-    window.location.reload();
+    this.setState({
+      file: null,
+      userName: "",
+      birthday: "",
+      gender: "",
+      job: "",
+      fileName: "",
+    });
   };
 
   handleFileChange = (e) => {

@@ -27,9 +27,22 @@ const styles = (theme) => ({
 
 class App extends Component {
   //state = 컴포넌트 내부에서 관리되는 변경 가능한 데이터. props는 부모-> 자식 컴포넌트로 전달되는 읽기 전용 데이터.
-  state = {
-    customers: "",
-    completed: 0,
+  constructor(props) {
+    super(props);
+    this.state = {
+      customers: "",
+      completed: 0,
+    };
+  }
+
+  stateRefresh = () => {
+    this.setState({
+      customers: "",
+      completed: 0,
+    });
+    this.callApi()
+      .then((res) => this.setState({ customers: res }))
+      .catch((err) => console.log(err));
   };
 
   //모든 컴포넌트가 mount되었을 때 실행됨.
@@ -95,7 +108,8 @@ class App extends Component {
             </TableBody>
           </Table>
         </Paper>
-        <CustomerAdd />
+        {/*자식컴포넌트에 props로 넘김*/}
+        <CustomerAdd stateRefresh={this.stateRefresh} />
       </div>
     );
   }
