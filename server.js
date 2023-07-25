@@ -26,4 +26,23 @@ app.get("/api/customers", (req, res) => {
   });
 });
 
+const multer = require('multer');
+const upload = multer({dest : './upload'});
+//image경로로 들어오면 upload폴더와 매핑.
+app.use('/image', express.static('./upload'));
+
+app.post('/api/customers', upload.single('image'), (req, res) => {
+  let sql = 'insert into customer values (null, ?, ?, ?, ?, ?)';
+  let image = 'http://localhost:3001/image/' + req.file.filename;
+  let name = req.body.name;
+  let birthday = req.body.birthday;
+  let gender = req.body.gender;
+  let job = req.body.job;
+  let params = [image, name, birthday, gender, job]
+  connection.query(sql, params,
+    (err, rows, fields) => {
+      res.send(rows);
+    })
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

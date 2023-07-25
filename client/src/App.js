@@ -26,7 +26,7 @@ const styles = (theme) => ({
 });
 
 class App extends Component {
-  //state는 변경될 수 있는 데이터, props는 변경될 수 없는 데이터 명시할 때.
+  //state = 컴포넌트 내부에서 관리되는 변경 가능한 데이터. props는 부모-> 자식 컴포넌트로 전달되는 읽기 전용 데이터.
   state = {
     customers: "",
     completed: 0,
