@@ -52,6 +52,7 @@ const styles = (theme) => ({
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
+    marginLeft: 30,
   },
   search: {
     position: "relative",
@@ -95,6 +96,8 @@ const styles = (theme) => ({
     },
   },
 });
+
+const pages = ["Products", "Pricing", "Blog"];
 
 class App extends Component {
   //state = 컴포넌트 내부에서 관리되는 변경 가능한 데이터. props는 부모-> 자식 컴포넌트로 전달되는 읽기 전용 데이터.
@@ -176,19 +179,24 @@ class App extends Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
+          <Toolbar disableGutters>
+            <Typography
+              className={classes.title}
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
               color="inherit"
-              aria-label="Open drawer"
             >
-              <MenuIcon />
-            </IconButton>
+              Home
+            </Typography>
             <Typography
               className={classes.title}
               variant="h6"
               color="inherit"
               noWrap
+              component="a"
+              href="/"
             >
               고객 관리 시스템
             </Typography>
