@@ -28,11 +28,47 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    // 여기서 로그인 처리를 수행하면 됩니다.
-    // 예제이므로 간단하게 입력한 값을 콘솔에 출력합니다.
-    console.log("Username:", username);
-    console.log("Password:", password);
+  const handleLogin = async () => {
+    // 서버 URL을 설정합니다. 적절한 URL로 변경해주세요.
+    const apiUrl = "/api/login";
+
+    // 보낼 데이터를 JSON 형태로 만듭니다.
+    const requestData = {
+      username: username,
+      password: password,
+    };
+
+    // fetch 함수를 사용하여 POST 요청을 보냅니다.
+    return fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+  };
+
+  const callApi = () => {
+    handleLogin()
+      .then((response) => {
+        // HTTP 응답이 성공적으로 도착한 경우에만 JSON 데이터를 가져와서 처리합니다.
+        if (response.ok) {
+          return response.json();
+        } else {
+          // HTTP 응답이 에러인 경우에 대한 처리를 여기에 추가할 수 있습니다.
+          // 예를 들어, 로그인 실패 시 에러 메시지를 사용자에게 보여줄 수 있습니다.
+          console.error("HTTP Error:", response.status);
+        }
+      })
+      .then((data) => {
+        // 서버로부터 받은 응답 데이터를 처리합니다.
+        // 예를 들어, 로그인 성공 여부 등을 판단하여 다음 동작을 수행할 수 있습니다.
+        console.log(data);
+      })
+      .catch((error) => {
+        // 에러가 발생한 경우 처리합니다.
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -52,7 +88,7 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button variant="contained" color="primary" onClick={handleLogin}>
+          <Button variant="contained" color="primary" onClick={callApi}>
             Login
           </Button>
         </form>
