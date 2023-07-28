@@ -1,9 +1,9 @@
 import React from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import CustomerDelete from "./CustomerDelete";
+import MemberDelete from "./MemberDelete";
 
-class Customer extends React.Component {
+class MemberTable extends React.Component {
   render() {
     return (
       <TableRow>
@@ -12,11 +12,11 @@ class Customer extends React.Component {
           <img src={this.props.image} height="200" width="200" alt="profile" />
         </TableCell>
         <TableCell>{this.props.name}</TableCell>
-        <TableCell>{this.props.birthday}</TableCell>
+        <TableCell>{this.props.password}</TableCell>
         <TableCell>{this.props.gender}</TableCell>
         <TableCell>{this.props.job}</TableCell>
         <TableCell>
-          <CustomerDelete
+          <MemberDelete
             stateRefresh={this.props.stateRefresh}
             id={this.props.id}
           />
@@ -26,4 +26,4 @@ class Customer extends React.Component {
   }
 }
 
-export default Customer;
+export default MemberTable;

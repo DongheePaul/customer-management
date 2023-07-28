@@ -55,4 +55,36 @@ app.delete("/api/customers/:id", (req, res) => {
   });
 });
 
+app.post("/api/members", upload.single("image"), (req, res) => {
+  let sql = "insert into members values (null, ?, ?, ?, ?, 0, 0, now(), null)";
+  let image = "http://localhost:3001/image/" + req.file.filename;
+  let name = req.body.name;
+  let password = req.body.password;
+  let gender = req.body.gender;
+  let params = [image, name, password, gender];
+  connection.query(sql, params, (err, rows, fields) => {
+    console.log("에러" + err);
+    console.log("rows" + rows);
+    res.send(rows);
+  });
+});
+
+app.get("/api/members", (req, res) => {
+  console.log("api/members 왓슈 ");
+  connection.query(
+    "select * from members where is_deleted = 0",
+    (err, rows, fields) => {
+      res.send(rows);
+    }
+  );
+});
+
+app.delete("/api/members/:id", (req, res) => {
+  let sql = "UPDATE members SET is_deleted = 1 WHERE id = ?";
+  let params = [req.params.id];
+  connection.query(sql, params, (err, rows, fields) => {
+    res.send(rows);
+  });
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

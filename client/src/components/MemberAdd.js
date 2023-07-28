@@ -14,13 +14,13 @@ const styles = (theme) => ({
   },
 });
 
-class CustomerAdd extends React.Component {
+class MemberAdd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
       userName: "",
-      birthday: "",
+      password: "",
       gender: "",
       job: "",
       fileName: "",
@@ -30,13 +30,13 @@ class CustomerAdd extends React.Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault();
-    this.addCustomer().then((response) => {
+    this.addMember().then((response) => {
       this.props.stateRefresh();
     });
     this.setState({
       file: null,
       userName: "",
-      birthday: "",
+      password: "",
       gender: "",
       job: "",
       fileName: "",
@@ -67,7 +67,7 @@ class CustomerAdd extends React.Component {
     this.setState({
       file: null,
       userName: "",
-      birthday: "",
+      password: "",
       gender: "",
       job: "",
       fileName: "",
@@ -75,14 +75,13 @@ class CustomerAdd extends React.Component {
     });
   };
 
-  addCustomer = () => {
-    const url = "/api/customers";
+  addMember = () => {
+    const url = "/api/members";
     const formData = new FormData();
     formData.append("image", this.state.file);
     formData.append("name", this.state.userName);
-    formData.append("birthday", this.state.birthday);
+    formData.append("password", this.state.password);
     formData.append("gender", this.state.gender);
-    formData.append("job", this.state.job);
 
     const config = {
       headers: {
@@ -138,10 +137,10 @@ class CustomerAdd extends React.Component {
             />
             <br />
             <TextField
-              label="생년월일"
+              label="비밀번호"
               type="text"
-              name="birthday"
-              value={this.state.birthday}
+              name="password"
+              value={this.state.password}
               onChange={this.handleValueChange}
             />
             <br />
@@ -150,14 +149,6 @@ class CustomerAdd extends React.Component {
               type="text"
               name="gender"
               value={this.state.gender}
-              onChange={this.handleValueChange}
-            />
-            <br />
-            <TextField
-              label="직업"
-              type="text"
-              name="job"
-              value={this.state.job}
               onChange={this.handleValueChange}
             />
             <br />
@@ -184,4 +175,4 @@ class CustomerAdd extends React.Component {
   }
 }
 
-export default withStyles(styles)(CustomerAdd);
+export default withStyles(styles)(MemberAdd);

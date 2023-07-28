@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Customer from "./page/Customer";
+import Member from "./page/Member";
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./page/Login";
@@ -11,7 +11,7 @@ function App() {
       <div>
         <Header />
         <Routes>
-          <Route path="/" element={<Customer />} />
+          <Route path="/" element={<Member />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>

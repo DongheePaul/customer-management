@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import CustomerTable from "../components/CustomerTable";
-import CustomerAdd from "../components/CustomerAdd";
+import MemberTable from "../components/MemberTable";
+import MemberAdd from "../components/MemberAdd";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -9,9 +9,6 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import { alpha } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
@@ -95,25 +92,25 @@ const styles = (theme) => ({
 });
 const useStyles = makeStyles(styles);
 
-function Customer() {
-  const [customers, setCustomers] = useState([]);
+function Member() {
+  const [members, setMembers] = useState([]);
   const [completed, setCompleted] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
   const classes = useStyles(); // makeStyles의 반환 값을 호출하여 classes 객체를 가져옴
 
   const stateRefresh = () => {
-    setCustomers([]);
+    setMembers([]);
     setCompleted(0);
     setSearchKeyword("");
     callApi()
-      .then((res) => setCustomers(res))
+      .then((res) => setMembers(res))
       .catch((err) => console.log(err));
   };
   //리액트의 훅.
   useEffect(() => {
     const timer = setInterval(progress, 20);
     callApi()
-      .then((res) => setCustomers(res))
+      .then((res) => setMembers(res))
       .catch((err) => console.log(err));
 
     return () => {
@@ -122,7 +119,7 @@ function Customer() {
   }, []);
 
   const callApi = async () => {
-    const response = await fetch("/api/customers");
+    const response = await fetch("/api/members");
     const body = await response.json();
     return body;
   };
@@ -138,20 +135,19 @@ function Customer() {
   };
 
   const filteredComponent = (data) => {
-    data = data.filter((customer) => {
-      return customer.name.indexOf(searchKeyword) > -1;
+    data = data.filter((member) => {
+      return member.name.indexOf(searchKeyword) > -1;
     });
     return data.map((c) => {
       return (
-        <CustomerTable
+        <MemberTable
           stateRefresh={stateRefresh}
           key={c.id}
           id={c.id}
           image={c.image}
           name={c.name}
-          birthday={c.birthday}
+          password={c.password}
           gender={c.gender}
-          job={c.job}
         />
       );
     });
@@ -161,7 +157,7 @@ function Customer() {
     "번호",
     "프로필",
     "이름",
-    "생년월일",
+    "비밀번호",
     "성별",
     "직업",
     "설정",
@@ -170,7 +166,7 @@ function Customer() {
   return (
     <div className={classes.root}>
       <div className={classes.menu}>
-        <CustomerAdd stateRefresh={stateRefresh} />
+        <MemberAdd stateRefresh={stateRefresh} />
       </div>
       <div className={classes.search}>
         <div className={classes.searchIcon}>
@@ -197,8 +193,8 @@ function Customer() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers ? (
-              filteredComponent(customers)
+            {members ? (
+              filteredComponent(members)
             ) : (
               <TableRow>
                 <TableCell colSpan="6" align="center">
@@ -217,4 +213,4 @@ function Customer() {
   );
 }
 
-export default withStyles(styles)(Customer);
+export default withStyles(styles)(Member);
