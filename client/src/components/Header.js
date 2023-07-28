@@ -2,18 +2,28 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  title: {
+    flexGrow: 1,
+  },
+}));
 
 const Header = () => {
+  const classes = useStyles();
+
   return (
     <AppBar position="static">
       <Toolbar disableGutters>
         <Typography
+          className={classes.title}
           variant="h6"
           noWrap
-          component="a"
-          href="/"
+          component={Link}
+          to="/"
           color="inherit"
-          style={{ marginRight: "20px" }}
         >
           Home
         </Typography>
@@ -23,11 +33,18 @@ const Header = () => {
           noWrap
           component="a"
           href="/"
-          style={{ marginRight: "20px" }}
+          className={classes.title}
         >
           고객 관리 시스템
         </Typography>
-        <Typography variant="h6" noWrap component="a" href="/" color="inherit">
+        <Typography
+          variant="h6"
+          noWrap
+          component={Link}
+          to="/signup"
+          color="inherit"
+          className={classes.title}
+        >
           로그인
         </Typography>
       </Toolbar>
