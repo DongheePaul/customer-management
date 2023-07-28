@@ -109,7 +109,7 @@ function Customer() {
       .then((res) => setCustomers(res))
       .catch((err) => console.log(err));
   };
-
+  //리액트의 훅.
   useEffect(() => {
     const timer = setInterval(progress, 20);
     callApi()
@@ -169,31 +169,6 @@ function Customer() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar disableGutters>
-          <Typography
-            className={classes.title}
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            color="inherit"
-          >
-            Home
-          </Typography>
-          <Typography
-            className={classes.title}
-            variant="h6"
-            color="inherit"
-            noWrap
-            component="a"
-            href="/"
-          >
-            고객 관리 시스템
-          </Typography>
-          <div className={classes.grow} />
-        </Toolbar>
-      </AppBar>
       <div className={classes.menu}>
         <CustomerAdd stateRefresh={stateRefresh} />
       </div>
