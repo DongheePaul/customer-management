@@ -86,6 +86,7 @@ app.delete("/api/members/:id", (req, res) => {
   });
 });
 
+const { jwtHelper } = require("./component");
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
   // Prepared Statement 쿼리 생성
@@ -97,7 +98,12 @@ app.post("/api/login", (req, res) => {
       res.status(401).json({ success: false, message: "Invalid credentials" });
       return;
     }
-    res.status(200).json({ success: true });
+    console.log(results);
+
+    console.log(results[0].id);
+    const token = jwtHelper.generateToken(results[0].id, results[0].name);
+    console.log(token);
+    res.status(200).json({ success: true, token: token });
   });
 });
 
