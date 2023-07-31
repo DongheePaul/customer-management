@@ -70,7 +70,6 @@ app.post("/api/members", upload.single("image"), (req, res) => {
 });
 
 app.get("/api/members", (req, res) => {
-  console.log("api/members 왓슈 ");
   connection.query(
     "select * from members where is_deleted = 0",
     (err, rows, fields) => {
@@ -88,8 +87,18 @@ app.delete("/api/members/:id", (req, res) => {
 });
 
 app.post("/api/login", (req, res) => {
-  console.log("login 왓슈");
-  res.send("hi");
+  const { username, password } = req.body;
+  // Prepared Statement 쿼리 생성
+  const sql = "SELECT * FROM members WHERE name = ? AND password = ?";
+
+  // Prepared Statement 쿼리 실행
+  connection.query(sql, [username, password], (err, results) => {
+    if (err) {
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+      return;
+    }
+    res.status(200).json({ success: true });
+  });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
