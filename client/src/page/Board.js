@@ -7,9 +7,14 @@ const BoardList = () => {
     { id: 3, title: "게시글 3", author: "작성자3", date: "2023-07-30" },
   ];
 
+  // 로컬 스토리지에서 authToken 가져오기
+  const authToken = localStorage.getItem("authToken");
+
   return (
     <div>
       <h2>게시판 목록</h2>
+      {/* authToken이 있으면 글쓰기 버튼을 보여주고, 없으면 숨김 */}
+      {authToken && <button>글쓰기</button>}
       <table>
         <thead>
           <tr>
