@@ -62,11 +62,7 @@ const LoginPage = () => {
           const storedToken = localStorage.getItem("authToken");
           if (storedToken) {
             // 토큰이 존재하는 경우, 원하는 동작 수행
-            console.log("Stored Token:", storedToken);
-            navigate("/", { replace: true }); // "/"로 페이지 이동 (replace 옵션을 true로 설정하여 기록에 남기지 않음)
-
-            // 토큰을 활용하여 API 요청 또는 다른 동작 수행
-            // ...
+            navigate("/", { replace: true }); // "/"로 페이지 이동.replace 옵션을 true로 설정하여 기록에 남기지 않음
           } else {
             console.log("Token not found in localStorage.");
           }

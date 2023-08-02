@@ -1,24 +1,18 @@
+"use strict";
+
 const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.PORT || 3001;
+const mysql = require("mysql");
+const conf = require("./config/config.json");
+const routes = require("./src/routes");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const db = fs.readFileSync("./database.json");
-const conf = JSON.parse(db);
-const mysql = require("mysql");
-
-const connection = mysql.createConnection({
-  host: conf.host,
-  user: conf.user,
-  password: conf.password,
-  port: conf.port,
-  database: conf.database,
-});
-connection.connect();
+routes.load(app);
 
 app.get("/api/customers", (req, res) => {
   connection.query(
@@ -86,7 +80,7 @@ app.delete("/api/members/:id", (req, res) => {
   });
 });
 
-const { jwtHelper } = require("./component");
+const { jwtHelper } = require("./src/middlewares");
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
   // Prepared Statement 쿼리 생성
@@ -98,11 +92,7 @@ app.post("/api/login", (req, res) => {
       res.status(401).json({ success: false, message: "Invalid credentials" });
       return;
     }
-    console.log(results);
-
-    console.log(results[0].id);
     const token = jwtHelper.generateToken(results[0].id, results[0].name);
-    console.log(token);
     res.status(200).json({ success: true, token: token });
   });
 });

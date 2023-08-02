@@ -120,6 +120,7 @@ function Member() {
 
   const callApi = async () => {
     const response = await fetch("/api/members");
+    console.log(response);
     const body = await response.json();
     return body;
   };
