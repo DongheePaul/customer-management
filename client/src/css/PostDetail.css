@@ -22,3 +22,26 @@
 .post-detail-content {
   line-height: 1.6;
 }
+/* PostDetail.css */
+.post-detail-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.post-detail-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.post-detail-author,
+.post-detail-date {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.post-detail-content {
+  font-size: 16px;
+  line-height: 1.6;
+}

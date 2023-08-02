@@ -3,6 +3,7 @@
 const db = require("./database");
 
 const read = async (sql, params) => {
+  console.log("read in m_post. query =>  " + sql);
   const result = await db.query(sql, params);
   return result;
 };

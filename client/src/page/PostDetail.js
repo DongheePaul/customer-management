@@ -7,7 +7,6 @@ const PostDetail = () => {
   const [post, setPost] = useState({});
 
   useEffect(() => {
-    // Fetch the post data from the server based on the post ID
     fetchPost();
   }, []);
 
@@ -31,11 +30,19 @@ const PostDetail = () => {
   };
 
   return (
-    <div className="post-detail-container">
-      <h2 className="post-detail-title">{post.title}</h2>
-      <p className="post-detail-author">작성자: {post.author_id}</p>
-      <p className="post-detail-date">작성일: {formatDate(post.created_at)}</p>
-      <p className="post-detail-content">{post.content}</p>
+    <div>
+      {Object.keys(post).length === 0 ? (
+        <p>로딩 중...</p>
+      ) : (
+        <>
+          <h2 className="post-detail-title">{post[0].title}</h2>
+          <p className="post-detail-author">작성자: {post[0].author_id}</p>
+          <p className="post-detail-date">
+            작성일: {formatDate(post[0].created_at)}
+          </p>
+          <p className="post-detail-content">{post[0].content}</p>
+        </>
+      )}
     </div>
   );
 };

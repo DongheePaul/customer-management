@@ -4,9 +4,20 @@ const { m_post } = require("../../model");
 const { jwtHelper } = require("../../middlewares");
 
 const read = async (req, res, next) => {
-  const query = "select * from posts where is_deleted = 0";
-  const results = await m_post.read(query);
-  res.json(results);
+  const { post_id } = req.params;
+  console.log("read in post.controller. id => " + post_id);
+  if (post_id) {
+    const query = "select * from posts where id = " + post_id;
+
+    const results = await m_post.read(query);
+    console.log("read in post.controller. results => " + results);
+
+    res.json(results);
+  } else {
+    const query = "select * from posts where is_deleted = 0";
+    const results = await m_post.read(query);
+    res.json(results);
+  }
 };
 
 const create = async (req, res, next) => {
