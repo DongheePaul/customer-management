@@ -2,8 +2,8 @@
 
 const db = require("./database");
 
-const read = async (sql) => {
-  const result = await db.query(sql);
+const read = async (sql, params) => {
+  const result = await db.query(sql, params);
   return result;
 };
 
