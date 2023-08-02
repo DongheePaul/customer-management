@@ -35,6 +35,10 @@ const connectionStart = async () => {
 
 const query = (sql, params) => {
   return new Promise((resolve, reject) => {
+    console.log("in query. sql => " + sql);
+    if (params) {
+      console.log("in query. params => " + params);
+    }
     connection.query(sql, params, (err, rows, fields) => {
       if (err) {
         console.log("in query err" + err);
