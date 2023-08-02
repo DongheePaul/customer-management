@@ -51,7 +51,9 @@ const BoardList = () => {
           {boards.map((board) => (
             <tr key={board.id}>
               <td>{board.id}</td>
-              <td>{board.title}</td>
+              <td>
+                <Link to={`/posts/${board.id}`}>{board.title}</Link>
+              </td>
               <td>{board.author_id}</td>
               <td>{formatDate(board.created_at)}</td>
             </tr>
