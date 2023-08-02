@@ -40,7 +40,6 @@ const query = (sql, params) => {
         console.log("in query err" + err);
         reject(err);
       } else {
-        console.log("in query rows" + rows);
         resolve(rows);
       }
     });

@@ -18,6 +18,19 @@ function generateToken(id, username) {
   return token;
 }
 
+const verify = (authToken) => {
+  return new Promise((resolve, reject) => {
+    const tokenValue = authToken ? authToken.replace("Bearer ", "") : null;
+    try {
+      const decodedToken = jwt.verify(tokenValue, conf.jwt.secret);
+      resolve(decodedToken);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   generateToken,
+  verify,
 };
