@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const BoardList = () => {
   const boards = [
@@ -14,7 +15,11 @@ const BoardList = () => {
     <div>
       <h2>게시판 목록</h2>
       {/* authToken이 있으면 글쓰기 버튼을 보여주고, 없으면 숨김 */}
-      {authToken && <button>글쓰기</button>}
+      {authToken && (
+        <Link to="/write">
+          <button>글쓰기</button>
+        </Link>
+      )}
       <table>
         <thead>
           <tr>
