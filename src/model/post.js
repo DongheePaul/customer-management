@@ -12,7 +12,7 @@ const create = async (sql, params) => {
   return result;
 };
 
-const deleteMember = async (sql, params) => {
+const deletePost = async (sql, params) => {
   const result = await db.query(sql, params);
   return result;
 };
@@ -24,6 +24,6 @@ const update = async (sql, params) => {
 module.exports = {
   read,
   create,
-  delete: deleteMember,
+  delete: deletePost,
   update,
 };

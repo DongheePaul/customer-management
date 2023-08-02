@@ -2,6 +2,7 @@
 
 const { m_post } = require("../../model");
 const { jwtHelper } = require("../../middlewares");
+const { param } = require("./post.api");
 
 const read = async (req, res, next) => {
   const { post_id } = req.params;
@@ -35,10 +36,14 @@ const create = async (req, res, next) => {
     return res.status(401).json({ error: error });
   }
 };
-const deleteMember = async (req, res, next) => {
-  let sql = "UPDATE members SET is_deleted = 1 WHERE id = ?";
-  let params = [req.params.id];
-  const results = await m_member.delete(sql, params);
+const deletePost = async (req, res, next) => {
+  const { post_id } = req.params;
+  let params = [post_id];
+  let sql = "UPDATE posts SET is_deleted = 1 WHERE id = ?";
+  console.log("post_id ===> " + params);
+  const results = await m_post.delete(sql, params);
+  console.log("results ===> " + results);
+
   res.json(results);
 };
 
@@ -62,6 +67,6 @@ const update = async (req, res, next) => {
 module.exports = {
   read,
   create,
-  delete: deleteMember,
+  delete: deletePost,
   update,
 };

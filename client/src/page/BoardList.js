@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../css/BoardList.css"; // Import custom CSS for styling
+import "../css/BoardList.css";
 
 const BoardList = () => {
   const [boards, setBoards] = useState([]);

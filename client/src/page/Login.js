@@ -51,7 +51,7 @@ const LoginPage = () => {
     handleLogin()
       .then((response) => {
         if (response.ok) {
-          return response.json(); // JSON 데이터 추출하여 반환
+          return response.json();
         } else {
           console.error("HTTP Error:", response.status);
         }

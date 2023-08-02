@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import "../css/PostDetail.css"; // Import custom CSS for styling
 
 const PostDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPost();
@@ -18,6 +19,23 @@ const PostDetail = () => {
         setPost(data);
       } else {
         console.error("게시물 데이터 가져오기 실패:", response.status);
+      }
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/posts/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        console.log("게시물 삭제 성공!");
+        // Redirect to the homepage or any other page after successful delete
+        navigate("/board");
+      } else {
+        console.error("게시물 삭제 실패:", response.status);
       }
     } catch (error) {
       console.error("에러:", error);
@@ -44,6 +62,7 @@ const PostDetail = () => {
           <Link to={`/edit/${id}`}>
             <button>게시물 수정</button>
           </Link>
+          <button onClick={handleDelete}>게시물 삭제</button>
         </>
       )}
     </div>
