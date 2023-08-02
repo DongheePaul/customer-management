@@ -1,6 +1,10 @@
 "use strict";
 
-const routers = [require("../component/member"), require("../component/login")];
+const routers = [
+  require("../component/member"),
+  require("../component/login"),
+  require("../component/post"),
+];
 
 const load = (app) => {
   app.get("/hello", (req, res) => {

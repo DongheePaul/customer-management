@@ -9,7 +9,6 @@ const read = async (req, res, next) => {
 };
 
 const create = async (req, res, next) => {
-  console.log("in create in member.controller");
   let sql = "insert into members values (null, ?, ?, ?, ?, 0, 0, now(), null)";
   let image = "http://localhost:3001/image/" + req.file.filename;
   let name = req.body.name;

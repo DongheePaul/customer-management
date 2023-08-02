@@ -26,10 +26,8 @@ const WritePost = () => {
       });
 
       if (response.ok) {
-        // 글 작성이 성공적으로 완료된 경우 게시판 목록으로 이동
         navigate("/");
       } else {
-        // 글 작성이 실패한 경우 에러 메시지 처리
         console.error("글 작성 실패:", response.status);
       }
     } catch (error) {
