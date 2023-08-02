@@ -15,12 +15,14 @@ const WritePost = () => {
       title: title,
       content: content,
     };
+    const authToken = localStorage.getItem("authToken");
 
     try {
       const response = await fetch("/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(formData),
       });
