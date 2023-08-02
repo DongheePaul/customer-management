@@ -39,7 +39,15 @@ const Header = () => {
           to="/"
           className={classes.title}
         >
-          고객 관리 시스템
+          멤버 관리 시스템
+        </Typography>
+        <Typography
+          variant="h6"
+          component={Link}
+          to="/board"
+          className={classes.title}
+        >
+          게시판
         </Typography>
         {authToken ? (
           <IconButton

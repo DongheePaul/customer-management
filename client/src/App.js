@@ -1,9 +1,10 @@
 import React from "react";
 import "./App.css";
-import Member from "./page/Member";
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Member from "./page/Member";
 import Login from "./page/Login";
+import Board from "./page/Board";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Member />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/board" element={<Board />} />
         </Routes>
       </div>
     </BrowserRouter>
