@@ -5,12 +5,10 @@ const { jwtHelper } = require("../../middlewares");
 
 const read = async (req, res, next) => {
   const { post_id } = req.params;
-  console.log("read in post.controller. id => " + post_id);
   if (post_id) {
     const query = "select * from posts where id = " + post_id;
 
     const results = await m_post.read(query);
-    console.log("read in post.controller. results => " + results);
 
     res.json(results);
   } else {
@@ -28,7 +26,7 @@ const create = async (req, res, next) => {
 
   try {
     const decodedToken = await jwtHelper.verify(authToken);
-    authorId = decodedToken.id;
+    authorId = decodedToken.username;
     const sql = `INSERT INTO posts (title, content, author_id) VALUES (?, ?, ?)`;
     const values = [title, content, authorId];
     const results = await m_post.create(sql, values);
@@ -44,8 +42,26 @@ const deleteMember = async (req, res, next) => {
   res.json(results);
 };
 
+const update = async (req, res, next) => {
+  console.log("in updatePost******************");
+  const { post_id } = req.params;
+  const { title, content } = req.body;
+  const params = [title, content, post_id];
+  const sql = "UPDATE posts SET title=?, content=? WHERE id=?";
+
+  try {
+    const result = await m_post.update(sql, params);
+    console.log(result);
+    res.json(result);
+  } catch (error) {
+    console.log("error in update in post.controller.js ==> " + error);
+    return res.status(401).json({ error: error });
+  }
+};
+
 module.exports = {
   read,
   create,
   delete: deleteMember,
+  update,
 };

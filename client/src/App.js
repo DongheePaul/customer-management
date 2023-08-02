@@ -5,8 +5,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Member from "./page/Member";
 import Login from "./page/Login";
 import BoardList from "./page/BoardList";
-import WritePost from "./components/WritePost";
+import WritePost from "./page/PostWrite";
 import PostDetail from "./page/PostDetail";
+import PostEdit from "./page/PostEdit";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/board" element={<BoardList />} />
           <Route path="/write" element={<WritePost />} />
           <Route path="/posts/:id" element={<PostDetail />} />
+          <Route path="/edit/:id" element={<PostEdit />} />
         </Routes>
       </div>
     </BrowserRouter>

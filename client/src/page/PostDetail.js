@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "../css/PostDetail.css"; // Import custom CSS for styling
 
 const PostDetail = () => {
@@ -41,6 +41,9 @@ const PostDetail = () => {
             작성일: {formatDate(post[0].created_at)}
           </p>
           <p className="post-detail-content">{post[0].content}</p>
+          <Link to={`/edit/${id}`}>
+            <button>게시물 수정</button>
+          </Link>
         </>
       )}
     </div>
