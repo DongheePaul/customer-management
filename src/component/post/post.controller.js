@@ -1,12 +1,11 @@
 "use strict";
 
 const { m_post } = require("../../model");
-const conf = require("../../../config/config.json");
 const { jwtHelper } = require("../../middlewares");
 
 const read = async (req, res, next) => {
-  const query = "select * from members where is_deleted = 0";
-  const results = await m_member.read(query);
+  const query = "select * from posts where is_deleted = 0";
+  const results = await m_post.read(query);
   res.json(results);
 };
 

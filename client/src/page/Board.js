@@ -1,26 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "../css/BoardList.css"; // Import custom CSS for styling
 
 const BoardList = () => {
-  const boards = [
-    { id: 1, title: "게시글 1", author: "작성자1", date: "2023-07-28" },
-    { id: 2, title: "게시글 2", author: "작성자2", date: "2023-07-29" },
-    { id: 3, title: "게시글 3", author: "작성자3", date: "2023-07-30" },
-  ];
+  const [boards, setBoards] = useState([]);
 
-  // 로컬 스토리지에서 authToken 가져오기
   const authToken = localStorage.getItem("authToken");
 
+  useEffect(() => {
+    fetchBoards();
+  }, []);
+
+  const fetchBoards = async () => {
+    try {
+      const response = await fetch("/api/posts");
+      if (response.ok) {
+        const data = await response.json();
+        setBoards(data);
+      } else {
+        console.error("게시판 데이터 가져오기 실패:", response.status);
+      }
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString("ko-KR", options);
+  };
+
   return (
-    <div>
-      <h2>게시판 목록</h2>
-      {/* authToken이 있으면 글쓰기 버튼을 보여주고, 없으면 숨김 */}
+    <div className="board-list-container">
+      <h2 className="board-list-heading">게시판 목록</h2>
       {authToken && (
         <Link to="/write">
-          <button>글쓰기</button>
+          <button className="btn-write">글쓰기</button>
         </Link>
       )}
-      <table>
+      <table className="table table-bordered">
         <thead>
           <tr>
             <th>ID</th>
@@ -34,8 +52,8 @@ const BoardList = () => {
             <tr key={board.id}>
               <td>{board.id}</td>
               <td>{board.title}</td>
-              <td>{board.author}</td>
-              <td>{board.date}</td>
+              <td>{board.author_id}</td>
+              <td>{formatDate(board.created_at)}</td>
             </tr>
           ))}
         </tbody>

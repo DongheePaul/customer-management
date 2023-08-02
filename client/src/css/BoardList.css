@@ -1,0 +1,38 @@
+/* BoardList.css */
+
+.board-list-container {
+  margin: 20px;
+}
+
+.board-list-heading {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn-write {
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+  background-color: #e5e5e5;
+}

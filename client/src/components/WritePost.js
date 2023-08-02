@@ -28,7 +28,7 @@ const WritePost = () => {
       });
 
       if (response.ok) {
-        navigate("/");
+        navigate("/board");
       } else {
         console.error("글 작성 실패:", response.status);
       }
