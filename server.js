@@ -22,23 +22,6 @@ app.delete("/api/customers/:id", (req, res) => {
   });
 });
 
-app.get("/api/members", (req, res) => {
-  connection.query(
-    "select * from members where is_deleted = 0",
-    (err, rows, fields) => {
-      res.send(rows);
-    }
-  );
-});
-
-app.delete("/api/members/:id", (req, res) => {
-  let sql = "UPDATE members SET is_deleted = 1 WHERE id = ?";
-  let params = [req.params.id];
-  connection.query(sql, params, (err, rows, fields) => {
-    res.send(rows);
-  });
-});
-
 const { jwtHelper } = require("./src/middlewares");
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;

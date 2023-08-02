@@ -19,7 +19,15 @@ const create = async (req, res, next) => {
   const results = await m_member.create(sql, params);
   res.json(results);
 };
+const deleteMember = async (req, res, next) => {
+  let sql = "UPDATE members SET is_deleted = 1 WHERE id = ?";
+  let params = [req.params.id];
+  const results = await m_member.delete(sql, params);
+  res.json(results);
+};
+
 module.exports = {
   read,
   create,
+  delete: deleteMember,
 };

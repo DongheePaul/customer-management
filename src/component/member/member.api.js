@@ -8,7 +8,7 @@ const multer = require("multer");
 const upload = multer({ dest: "./upload" });
 
 router.get("/api/members", controller.read);
-
 router.post("/api/members", upload.single("image"), controller.create);
+router.delete("/api/members/:id", controller.delete);
 
 module.exports = router;
