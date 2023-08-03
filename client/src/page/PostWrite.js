@@ -31,9 +31,11 @@ const WritePost = () => {
         navigate("/board");
       } else {
         console.error("글 작성 실패:", response.status);
+        const data = await response.json();
+        throw new Error(data.error);
       }
     } catch (error) {
-      console.error("에러:", error);
+      console.error("게시물 작성 에러:", error);
     }
   };
 

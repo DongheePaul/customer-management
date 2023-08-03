@@ -43,7 +43,46 @@ const verify = (authToken) => {
   });
 };
 
+const verifyForMiddleware = (authToken) => {
+  return new Promise((resolve, reject) => {
+    const tokenValue = authToken ? authToken.replace("Bearer ", "") : null;
+    try {
+      const decodedToken = jwt.verify(tokenValue, conf.jwt.secret);
+      resolve(decodedToken);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const verifyMiddleware = async (req, res, next) => {
+  const authToken = req.header("Authorization");
+  console.log("in verifymiddleware. authToken is: ", authToken);
+
+  if (!authToken) {
+    return res.status(401).json({
+      code: 401,
+      message: "토큰이 없습니다.",
+    });
+  }
+
+  try {
+    const decodedToken = await verifyForMiddleware(authToken);
+    console.log("in verifymiddleware. decodedToken is: ", decodedToken);
+
+    req.user = decodedToken; // Store the decoded token in the request object for later use
+    next();
+  } catch (error) {
+    if (error.code === 419) {
+      return res.status(419).json({ error: error.message });
+    } else {
+      return res.status(401).json({ error: error.message });
+    }
+  }
+};
+
 module.exports = {
   generateToken,
   verify,
+  verifyMiddleware,
 };

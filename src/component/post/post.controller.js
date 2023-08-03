@@ -23,6 +23,7 @@ const read = async (req, res, next) => {
 };
 
 const create = async (req, res, next) => {
+  console.log("in create");
   try {
     const authToken = req.header("Authorization");
     const { title, content } = req.body;
