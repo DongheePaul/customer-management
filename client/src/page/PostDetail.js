@@ -6,6 +6,7 @@ const PostDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState({});
   const navigate = useNavigate();
+  const authToken = localStorage.getItem("authToken");
 
   useEffect(() => {
     fetchPost();
@@ -27,18 +28,23 @@ const PostDetail = () => {
 
   const handleDelete = async () => {
     try {
+      console.log(authToken);
       const response = await fetch(`/api/posts/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
       });
       if (response.ok) {
         console.log("게시물 삭제 성공!");
-        // Redirect to the homepage or any other page after successful delete
         navigate("/board");
       } else {
-        console.error("게시물 삭제 실패:", response.status);
+        const data = await response.json();
+        throw new Error(data.error);
       }
     } catch (error) {
-      console.error("에러:", error);
+      console.error("게시물 삭제 에러:", error);
     }
   };
 
@@ -54,7 +60,7 @@ const PostDetail = () => {
       ) : (
         <>
           <h2 className="post-detail-title">{post[0].title}</h2>
-          <p className="post-detail-author">작성자: {post[0].author_id}</p>
+          <p className="post-detail-author">작성자: {post[0].author_name}</p>
           <p className="post-detail-date">
             작성일: {formatDate(post[0].created_at)}
           </p>

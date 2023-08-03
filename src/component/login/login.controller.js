@@ -1,7 +1,7 @@
 "use strict";
 
 const { m_member } = require("../../model");
-const { jwtHelper } = require("../../middlewares");
+const { jwtHelper } = require("../../utils");
 
 const read = async (req, res, next) => {
   const params = [req.body.username, req.body.password];

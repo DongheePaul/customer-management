@@ -8,11 +8,11 @@ function generateToken(id, username) {
       iss: "Donghee",
       sub: "authentication",
       id: id,
-      username: username,
+      name: username,
     },
     conf.jwt.secret,
     {
-      expiresIn: "15h",
+      expiresIn: "1h",
     }
   );
   return token;

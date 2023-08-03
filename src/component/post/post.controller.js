@@ -1,66 +1,88 @@
 "use strict";
 
 const { m_post } = require("../../model");
-const { jwtHelper } = require("../../middlewares");
-const { param } = require("./post.api");
+const { jwtHelper } = require("../../utils");
+const { postAuth } = require("./post.auth");
 
 const read = async (req, res, next) => {
-  const { post_id } = req.params;
-  if (post_id) {
-    const query = "select * from posts where id = " + post_id;
-
-    const results = await m_post.read(query);
-
-    res.json(results);
-  } else {
-    const query = "select * from posts where is_deleted = 0";
-    const results = await m_post.read(query);
-    res.json(results);
+  try {
+    //post_id가 있다면 게시물 1개 읽어오기
+    const { post_id } = req.params;
+    if (post_id) {
+      const query = "select * from posts where id = " + post_id;
+      const results = await m_post.read(query);
+      res.json(results);
+    } else {
+      const query = "select * from posts where is_deleted = 0";
+      const results = await m_post.read(query);
+      res.json(results);
+    }
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
   }
 };
 
 const create = async (req, res, next) => {
-  const authToken = req.header("Authorization");
-
-  const { title, content } = req.body;
-  let authorId = null;
-
   try {
+    const authToken = req.header("Authorization");
+    const { title, content } = req.body;
+    if (!title || !content || !authToken) {
+      throw new Error("Missing title or content or JWT token");
+    }
     const decodedToken = await jwtHelper.verify(authToken);
-    authorId = decodedToken.username;
-    const sql = `INSERT INTO posts (title, content, author_id) VALUES (?, ?, ?)`;
-    const values = [title, content, authorId];
-    const results = await m_post.create(sql, values);
+    const sql = `INSERT INTO posts (title, content, author_id, author_name) VALUES (?, ?, ?, ?)`;
+    const params = [title, content, decodedToken.id, decodedToken.name];
+    const results = await m_post.create(sql, params);
     res.json(results);
   } catch (error) {
-    return res.status(401).json({ error: error });
+    return res.status(400).json({ error: error.message });
   }
 };
-const deletePost = async (req, res, next) => {
-  const { post_id } = req.params;
-  let params = [post_id];
-  let sql = "UPDATE posts SET is_deleted = 1 WHERE id = ?";
-  console.log("post_id ===> " + params);
-  const results = await m_post.delete(sql, params);
-  console.log("results ===> " + results);
 
-  res.json(results);
+const deletePost = async (req, res, next) => {
+  try {
+    const { post_id } = req.params;
+    const authToken = req.header("Authorization");
+    if (!post_id || !authToken) {
+      throw new Error("Missing post id or JWT token");
+    }
+    const decodedToken = await jwtHelper.verify(authToken);
+    const isAuthorized = await postAuth(post_id, decodedToken.id);
+    if (!isAuthorized) {
+      throw new Error("Authorization failed");
+    }
+    const params = [post_id];
+    const sql = "UPDATE posts SET is_deleted = 1 WHERE id = ?";
+    const results = await m_post.delete(sql, params);
+    res.json(results);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
 };
 
 const update = async (req, res, next) => {
-  console.log("in updatePost******************");
-  const { post_id } = req.params;
-  const { title, content } = req.body;
-  const params = [title, content, post_id];
-  const sql = "UPDATE posts SET title=?, content=? WHERE id=?";
-
+  console.log("in update");
   try {
+    const { post_id } = req.params;
+    const { title, content } = req.body;
+    const authToken = req.header("Authorization");
+
+    if (!title || !post_id || !content | !authToken) {
+      throw new Error("Missing post id or JWT token");
+    }
+    const decodedToken = await jwtHelper.verify(authToken);
+    const isAuthorized = await postAuth(post_id, decodedToken.id);
+    console.log("isAuthorized", isAuthorized);
+    if (!isAuthorized) {
+      throw new Error("Authorization failed");
+    }
+    const params = [title, content, post_id];
+    const sql = "UPDATE posts SET title=?, content=? WHERE id=?";
     const result = await m_post.update(sql, params);
-    console.log(result);
     res.json(result);
   } catch (error) {
-    console.log("error in update in post.controller.js ==> " + error);
-    return res.status(401).json({ error: error });
+    console.log("in update error => " + error.message);
+    return res.status(400).json({ error: error.message });
   }
 };
 

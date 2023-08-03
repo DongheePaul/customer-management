@@ -5,7 +5,8 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.PORT || 3001;
 const routes = require("./src/routes");
-
+const db = require("./src/model/database");
+db.connectionStart();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

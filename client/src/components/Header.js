@@ -39,7 +39,7 @@ const Header = () => {
           to="/"
           className={classes.title}
         >
-          멤버 관리 시스템
+          멤버 관리
         </Typography>
         <Typography
           variant="h6"

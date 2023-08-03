@@ -54,7 +54,7 @@ const BoardList = () => {
               <td>
                 <Link to={`/posts/${board.id}`}>{board.title}</Link>
               </td>
-              <td>{board.author_id}</td>
+              <td>{board.author_name}</td>
               <td>{formatDate(board.created_at)}</td>
             </tr>
           ))}

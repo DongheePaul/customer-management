@@ -38,7 +38,7 @@ const query = (sql, params) => {
     connection.query(sql, params, (err, rows, fields) => {
       if (err) {
         console.log("in query err" + err);
-        reject(err);
+        reject(new Error("Error occurred during query."));
       } else {
         resolve(rows);
       }
@@ -46,9 +46,8 @@ const query = (sql, params) => {
   });
 };
 
-connectionStart();
-
 module.exports = {
   connect,
   query,
+  connectionStart,
 };

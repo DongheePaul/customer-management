@@ -8,6 +8,7 @@ const PostEdit = () => {
     content: "",
   });
   const navigate = useNavigate();
+  const authToken = localStorage.getItem("authToken");
 
   useEffect(() => {
     fetchPost();
@@ -45,16 +46,18 @@ const PostEdit = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(editedPost),
       });
       if (response.ok) {
         navigate("/board");
       } else {
-        console.error("게시물 수정 실패:", response.status);
+        const data = await response.json();
+        throw new Error(data.error);
       }
     } catch (error) {
-      console.error("에러:", error);
+      console.error("게시물 업데이트 에러:", error);
     }
   };
 
