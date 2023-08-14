@@ -1,7 +1,7 @@
 "use strict";
 
 const { m_post } = require("../../model");
-const { jwtHelper } = require("../../utils");
+const { jwtHelper } = require("../../middlewares");
 const { postAuth } = require("./post.auth");
 
 const read = async (req, res, next) => {
@@ -23,7 +23,7 @@ const read = async (req, res, next) => {
 };
 
 const create = async (req, res, next) => {
-  console.log("in create");
+  console.log("in create. req.user ===> " + JSON.stringify(req.user));
   try {
     const authToken = req.header("Authorization");
     const { title, content } = req.body;

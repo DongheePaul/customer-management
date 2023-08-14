@@ -68,9 +68,7 @@ const verifyMiddleware = async (req, res, next) => {
 
   try {
     const decodedToken = await verifyForMiddleware(authToken);
-    console.log("in verifymiddleware. decodedToken is: ", decodedToken);
-
-    req.user = decodedToken; // Store the decoded token in the request object for later use
+    req.user = decodedToken;
     next();
   } catch (error) {
     if (error.code === 419) {

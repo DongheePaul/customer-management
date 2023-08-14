@@ -100,10 +100,10 @@ class MemberAdd extends React.Component {
           color="primary"
           onClick={this.handleClickOpen}
         >
-          고객 추가
+          멤버 추가
         </Button>
         <Dialog open={this.state.open} onClose={this.handleClose}>
-          <DialogTitle>고객 추가</DialogTitle>
+          <DialogTitle>멤버 추가</DialogTitle>
           <DialogContent>
             <input
               className={classes.hidden}

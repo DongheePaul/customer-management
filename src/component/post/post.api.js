@@ -3,7 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const postController = require("./post.controller");
-const { jwtHelper } = require("../../utils");
+const { jwtHelper } = require("../../middlewares");
 
 router.get("/api/posts", postController.read);
 router.get("/api/posts/:post_id", postController.read);
