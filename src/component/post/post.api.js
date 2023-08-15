@@ -8,7 +8,7 @@ const { jwtHelper } = require("../../middlewares");
 router.get("/api/posts", postController.read);
 router.get("/api/posts/:post_id", postController.read);
 router.post("/api/posts", jwtHelper.verifyMiddleware, postController.create);
-router.put("/api/posts/:post_id", postController.update);
-router.delete("/api/posts/:post_id", postController.delete);
+router.put("/api/posts/:post_id", jwtHelper.verifyMiddleware,postController.update);
+router.delete("/api/posts/:post_id", jwtHelper.verifyMiddleware, postController.delete);
 
 module.exports = router;

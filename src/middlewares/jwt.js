@@ -62,7 +62,7 @@ const verifyMiddleware = async (req, res, next) => {
   if (!authToken) {
     return res.status(401).json({
       code: 401,
-      message: "토큰이 없습니다.",
+      message: "There is no jwt in request header.",
     });
   }
 

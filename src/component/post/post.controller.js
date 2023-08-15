@@ -25,12 +25,11 @@ const read = async (req, res, next) => {
 const create = async (req, res, next) => {
   console.log("in create. req.user ===> " + JSON.stringify(req.user));
   try {
-    const authToken = req.header("Authorization");
+    const decodedToken = req.user;
     const { title, content } = req.body;
-    if (!title || !content || !authToken) {
+    if (!title || !content || !decodedToken) {
       throw new Error("Missing title or content or JWT token");
     }
-    const decodedToken = await jwtHelper.verify(authToken);
     const sql = `INSERT INTO posts (title, content, author_id, author_name) VALUES (?, ?, ?, ?)`;
     const params = [title, content, decodedToken.id, decodedToken.name];
     const results = await m_post.create(sql, params);
@@ -41,14 +40,13 @@ const create = async (req, res, next) => {
 };
 
 const deletePost = async (req, res, next) => {
+  console.log("in deletePost. req.user ===> " + JSON.stringify(req.user));
   try {
     const { post_id } = req.params;
-    const authToken = req.header("Authorization");
-    if (!post_id || !authToken) {
+    if (!post_id || !req.user) {
       throw new Error("Missing post id or JWT token");
     }
-    const decodedToken = await jwtHelper.verify(authToken);
-    const isAuthorized = await postAuth(post_id, decodedToken.id);
+    const isAuthorized = await postAuth(post_id, req.user.id);
     if (!isAuthorized) {
       throw new Error("Authorization failed");
     }
@@ -62,20 +60,17 @@ const deletePost = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
-  console.log("in update");
+  console.log("in update. req.user ===> " + JSON.stringify(req.user));
   try {
     const { post_id } = req.params;
     const { title, content } = req.body;
-    const authToken = req.header("Authorization");
-
-    if (!title || !post_id || !content | !authToken) {
-      throw new Error("Missing post id or JWT token");
+    if (!title || !post_id || !content | !req.user) {
+      throw new Error("Missing title, post_id, post content or JWT token");
     }
-    const decodedToken = await jwtHelper.verify(authToken);
-    const isAuthorized = await postAuth(post_id, decodedToken.id);
+    const isAuthorized = await postAuth(post_id, req.user.id);
     console.log("isAuthorized", isAuthorized);
     if (!isAuthorized) {
-      throw new Error("Authorization failed");
+      throw new Error("Post authorization failed");
     }
     const params = [title, content, post_id];
     const sql = "UPDATE posts SET title=?, content=? WHERE id=?";

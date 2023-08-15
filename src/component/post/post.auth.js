@@ -7,10 +7,10 @@ const postAuth = async (post_id, user_id) => {
   const sql = "select author_id from posts where id = " + post_id;
   const result = await m_post.read(sql);
   if (result.length > 0 && result[0].author_id === user_id) {
-    console.log("auth success");
+    console.log("post auth success");
     return true;
   } else {
-    console.log("auth failed");
+    console.log("post auth failed");
     return false;
   }
 };
