@@ -9,10 +9,11 @@ React와 Node.js, AWS RDS(Mysql)로 만든 블로그입니다.
 이 있습니다.
 
 추후 업데이트 내용으로는
-1. jsonschema 패키지을 사용한 데이터 포맷, 값의 validation
-2. Rate limiter 적용
-3. mocha, chai를 활용한 테스트코드
-4. EC2, CodePipeline를 활용한 클라우드에서의 CI/CD
+1. JWT auth 미들웨어화
+2. jsonschema 패키지을 사용한 데이터 포맷, 값의 validation
+3. Rate limiter 적용
+4. mocha, chai를 활용한 테스트코드
+5. EC2, CodePipeline를 활용한 클라우드에서의 CI/CD
 
 등이 있습니다.
 
