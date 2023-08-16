@@ -5,11 +5,11 @@ React와 Node.js, AWS RDS(Mysql)로 만든 블로그입니다.
 1. 회원가입, 회원 삭제.
 2. 로그인, 로그아웃 - JWT 토큰 사용
 3. 게시판 - 게시글 작성, 게시글 삭제, 게시글 수정
+4. JWT auth 미들웨어화
 
 이 있습니다.
 
 추후 업데이트 내용으로는
-1. JWT auth 미들웨어화
 2. jsonschema 패키지을 사용한 데이터 포맷, 값의 validation
 3. Rate limiter 적용
 4. mocha, chai를 활용한 테스트코드
