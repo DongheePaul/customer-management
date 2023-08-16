@@ -1,5 +1,19 @@
 const jwt = require("jsonwebtoken");
 const conf = require("../../config/config.json");
+const Validator = require('jsonschema').Validator;
+const v = new Validator();
+
+const tokenFormat = {
+  'id': '/tokenFormat',
+  'type': 'object',
+  'properties': {
+    'id': { 'type': 'integer' },
+    'name': { 'type': 'string' },
+    'sub': { 'type': 'string' }
+  },
+  'required': ['id', 'name', 'sub']
+};
+v.addSchema(tokenFormat, '/tokenFormat');
 
 function generateToken(id, username) {
   const token = jwt.sign(
@@ -7,7 +21,6 @@ function generateToken(id, username) {
       type: "JWT",
       iss: "Donghee",
       sub: "authentication",
-      id: id,
       name: username,
     },
     conf.jwt.secret,
@@ -48,6 +61,11 @@ const verifyForMiddleware = (authToken) => {
     const tokenValue = authToken ? authToken.replace("Bearer ", "") : null;
     try {
       const decodedToken = jwt.verify(tokenValue, conf.jwt.secret);
+      const validationResult = v.validate(decodedToken, tokenFormat);
+      console.log(validationResult)
+      if (validationResult.errors.length !== 0) {
+        throw new Error(validationResult.errors);
+      }
       resolve(decodedToken);
     } catch (error) {
       reject(error);
