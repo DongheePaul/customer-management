@@ -1,10 +1,6 @@
 const jwt = require("jsonwebtoken");
 const conf = require("../../config/config.json");
-const Validator = require('jsonschema').Validator;
-const v = new Validator();
-const { format } = require('../util')
-console.log(format.tokenFormat);
-v.addSchema(format.tokenFormat, '/tokenFormat');
+const {validation} = require("../format")
 
 function generateToken(id, username) {
   const token = jwt.sign(
@@ -53,11 +49,7 @@ const verifyForMiddleware = (authToken) => {
     const tokenValue = authToken ? authToken.replace("Bearer ", "") : null;
     try {
       const decodedToken = jwt.verify(tokenValue, conf.jwt.secret);
-      const validationResult = v.validate(decodedToken, format.tokenFormat);
-      console.log(validationResult)
-      if (validationResult.errors.length !== 0) {
-        throw new Error(validationResult.errors);
-      }
+      validation.tokenFormatCheck(decodedToken);
       resolve(decodedToken);
     } catch (error) {
       reject(error);
