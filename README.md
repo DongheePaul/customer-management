@@ -6,14 +6,14 @@ React와 Node.js, AWS RDS(Mysql)로 만든 블로그입니다.
 2. 로그인, 로그아웃 - JWT 토큰 사용
 3. 게시판 - 게시글 작성, 게시글 삭제, 게시글 수정
 4. JWT auth 미들웨어화
+5. jsonschema 패키지을 사용한 데이터 포맷, 값의 validation
 
 이 있습니다.
 
 추후 업데이트 내용으로는
-1. jsonschema 패키지을 사용한 데이터 포맷, 값의 validation
-2. Rate limiter 적용
-3. mocha, chai를 활용한 테스트코드
-4. EC2, CodePipeline를 활용한 클라우드에서의 CI/CD
+1. Rate limiter 적용
+2. mocha, chai를 활용한 테스트코드
+3. EC2, CodePipeline를 활용한 클라우드에서의 CI/CD
 
 등이 있습니다.
 
