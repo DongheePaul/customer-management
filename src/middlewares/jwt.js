@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const conf = require("../../config/config.json");
-const {validation} = require("../format")
+const { validation } = require("../format");
 
 function generateToken(id, username) {
   const token = jwt.sign(
@@ -9,7 +9,6 @@ function generateToken(id, username) {
       iss: "Donghee",
       sub: "authentication",
       name: username,
-      id : id
     },
     conf.jwt.secret,
     {
@@ -19,13 +18,16 @@ function generateToken(id, username) {
   return token;
 }
 
-const verify = (authToken) => {
+const tokenVerify = (authToken) => {
   return new Promise((resolve, reject) => {
+    console.log("in tokenVerify");
     const tokenValue = authToken ? authToken.replace("Bearer ", "") : null;
     try {
       const decodedToken = jwt.verify(tokenValue, conf.jwt.secret);
+      validation.tokenFormatCheck(decodedToken);
       resolve(decodedToken);
     } catch (error) {
+      console.log("in verify => " + error.name.name);
       if (error.name === "TokenExpiredError") {
         return res.status(419).json({
           code: 419,
@@ -44,23 +46,8 @@ const verify = (authToken) => {
   });
 };
 
-const verifyForMiddleware = (authToken) => {
-  return new Promise((resolve, reject) => {
-    const tokenValue = authToken ? authToken.replace("Bearer ", "") : null;
-    try {
-      const decodedToken = jwt.verify(tokenValue, conf.jwt.secret);
-      validation.tokenFormatCheck(decodedToken);
-      resolve(decodedToken);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
 const verifyMiddleware = async (req, res, next) => {
   const authToken = req.header("Authorization");
-  console.log("in verifymiddleware. authToken is: ", authToken);
-
   if (!authToken) {
     return res.status(401).json({
       code: 401,
@@ -69,20 +56,19 @@ const verifyMiddleware = async (req, res, next) => {
   }
 
   try {
-    const decodedToken = await verifyForMiddleware(authToken);
+    console.log("before verify");
+    const decodedToken = await tokenVerify(authToken);
+    console.log("after verify");
+
     req.user = decodedToken;
     next();
   } catch (error) {
-    if (error.code === 419) {
-      return res.status(419).json({ error: error.message });
-    } else {
-      return res.status(401).json({ error: error.message });
-    }
+    console.log("error => " + error.message);
+    res.status(419).json({ error: error.message });
   }
 };
 
 module.exports = {
   generateToken,
-  verify,
   verifyMiddleware,
 };
