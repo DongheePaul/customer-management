@@ -1,9 +1,8 @@
-"use strict";
+import { Request, Response, NextFunction } from "express";
+import { m_member } from "../../model"; // 실제 경로에 맞게 조정 필요
+import { jwtHelper } from "../../middlewares"; // 실제 경로에 맞게 조정 필요
 
-const { m_member } = require("../../model");
-const { jwtHelper } = require("../../middlewares");
-
-const read = async (req, res, next) => {
+const read = async (req: Request, res: Response, next: NextFunction) => {
   const params = [req.body.username, req.body.password];
 
   // Prepared Statement 쿼리 생성
@@ -14,9 +13,7 @@ const read = async (req, res, next) => {
     res.status(200).json({ success: true, token: token });
   } catch (error) {
     res.status(401).json({ success: false, message: "Invalid credentials" });
-    return;
   }
 };
-module.exports = {
-  read,
-};
+
+export { read };

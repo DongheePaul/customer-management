@@ -1,15 +1,13 @@
-"use strict";
+import { Request, Response, NextFunction } from "express";
+import { m_post } from "../../model"; // 실제 경로에 맞게 조정 필요
+import { postAuth } from "./post.auth";
+import { UserRequest } from "../../middlewares/userRequest"; // 확장된 Request 인터페이스 import
 
-const { m_post } = require("../../model");
-const { jwtHelper } = require("../../middlewares");
-const { postAuth } = require("./post.auth");
-
-const read = async (req, res, next) => {
+const read = async (req: UserRequest, res: Response, next: NextFunction) => {
   try {
-    //post_id가 있다면 게시물 1개 읽어오기
-    const { post_id } = req.params;
+    const post_id = req.params.post_id;
     if (post_id) {
-      const query = "select * from posts where id = " + post_id;
+      const query = `select * from posts where id = ${post_id}`;
       const results = await m_post.read(query);
       res.json(results);
     } else {
@@ -22,7 +20,7 @@ const read = async (req, res, next) => {
   }
 };
 
-const create = async (req, res, next) => {
+const create = async (req: UserRequest, res: Response, next: NextFunction) => {
   console.log("in create. req.user ===> " + JSON.stringify(req.user));
   try {
     const decodedToken = req.user;
@@ -39,13 +37,18 @@ const create = async (req, res, next) => {
   }
 };
 
-const deletePost = async (req, res, next) => {
+const deletePost = async (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) => {
   console.log("in deletePost. req.user ===> " + JSON.stringify(req.user));
   try {
-    const { post_id } = req.params;
+    const post_id = parseInt(req.params.post_id);
     if (!post_id || !req.user) {
       throw new Error("Missing post id or JWT token");
     }
+
     const isAuthorized = await postAuth(post_id, req.user.id);
     if (!isAuthorized) {
       throw new Error("Authorization failed");
@@ -59,12 +62,12 @@ const deletePost = async (req, res, next) => {
   }
 };
 
-const update = async (req, res, next) => {
+const update = async (req: UserRequest, res: Response, next: NextFunction) => {
   console.log("in update. req.user ===> " + JSON.stringify(req.user));
   try {
-    const { post_id } = req.params;
+    const post_id = parseInt(req.params.post_id);
     const { title, content } = req.body;
-    if (!title || !post_id || !content | !req.user) {
+    if (!title || !post_id || !content || !req.user) {
       throw new Error("Missing title, post_id, post content or JWT token");
     }
     const isAuthorized = await postAuth(post_id, req.user.id);
@@ -82,9 +85,4 @@ const update = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  read,
-  create,
-  delete: deletePost,
-  update,
-};
+export { read, create, deletePost as delete, update };

@@ -1,14 +1,18 @@
-const jwt = require("jsonwebtoken");
-const conf = require("../../config/config.json");
-const { validation } = require("../format");
+import jwt from "jsonwebtoken";
+import conf from "../../config/config.json";
+import { validation } from "../format";
+import { Request, Response, NextFunction } from "express";
+import { UserRequest } from "./userRequest"; //
+import { UserPayload } from "./userPayload";
 
-function generateToken(id, username) {
+function generateToken(id: number, username: string): string {
   const token = jwt.sign(
     {
       type: "JWT",
       iss: "Donghee",
       sub: "authentication",
       name: username,
+      id: id,
     },
     conf.jwt.secret,
     {
@@ -18,35 +22,26 @@ function generateToken(id, username) {
   return token;
 }
 
-const tokenVerify = (authToken) => {
+const tokenVerify = (authToken: string): Promise<UserPayload> => {
   return new Promise((resolve, reject) => {
     console.log("in tokenVerify");
     const tokenValue = authToken ? authToken.replace("Bearer ", "") : null;
     try {
       const decodedToken = jwt.verify(tokenValue, conf.jwt.secret);
       validation.tokenFormatCheck(decodedToken);
-      resolve(decodedToken);
+      resolve(decodedToken as UserPayload);
     } catch (error) {
       console.log("in verify => " + error.name.name);
-      if (error.name === "TokenExpiredError") {
-        return res.status(419).json({
-          code: 419,
-          message: "토큰이 만료되었습니다.",
-        });
-      }
-      // 토큰의 비밀키가 일치하지 않는 경우
-      if (error.name === "JsonWebTokenError") {
-        return res.status(401).json({
-          code: 401,
-          message: "유효하지 않은 토큰입니다.",
-        });
-      }
       reject(error);
     }
   });
 };
 
-const verifyMiddleware = async (req, res, next) => {
+const verifyMiddleware = async (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const authToken = req.header("Authorization");
   if (!authToken) {
     return res.status(401).json({
@@ -68,7 +63,4 @@ const verifyMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  generateToken,
-  verifyMiddleware,
-};
+export { generateToken, verifyMiddleware };
